@@ -5,7 +5,7 @@ describe("Linked List Test", () => {
 		const ll = new LinkedList();
 		const value = 24;
 
-		ll.append(value);
+		ll.prepend(value);
 
 		expect(ll.head()).toBe(value);
 	});

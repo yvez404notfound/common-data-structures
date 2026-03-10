@@ -7,7 +7,7 @@ describe("Linked List Test", () => {
 
 		ll.prepend(value);
 
-		expect(ll.head()).toBe(value);
+		expect(ll.head.value).toBe(value);
 	});
 
 	test("should add a new node at end", () => {
@@ -16,7 +16,7 @@ describe("Linked List Test", () => {
 
 		ll.append(value);
 
-		expect(ll.tail()).toBe(value);
+		expect(ll.tail.value).toBe(value);
 	});
 
 	test("at() should return the value of node at given index", () => {
@@ -30,15 +30,16 @@ describe("Linked List Test", () => {
 		expect(ll.at(1)).toBe(value);
 	});
 
-	test("pop() should remove the head node", () => {
+	test("pop() should remove the head node and return the value of head node", () => {
 		const ll = new LinkedList();
 		const value = 24;
 
-		ll.append(21);
-		ll.append(23);
-		ll.append(value);
+		ll.prepend(21);
+		ll.prepend(23);
+		ll.prepend(value);
 
-		expect(ll.contains(value)).toBeFalsy();
+		expect(ll.pop()).toBe(value);
+		expect(ll.toString()).toBe("( 21 ) -> ( 23 ) -> null");
 	});
 
 	test("contains() should detect existing value in the list", () => {
@@ -56,9 +57,9 @@ describe("Linked List Test", () => {
 		const ll = new LinkedList();
 		const value = 24;
 
-		ll.append(21);
-		ll.append(23);
-		ll.append(value);
+		ll.prepend(21);
+		ll.prepend(23);
+		ll.prepend(value);
 
 		expect(ll.findIndex(value)).toBe(2);
 	});
@@ -67,10 +68,10 @@ describe("Linked List Test", () => {
 		const ll = new LinkedList();
 		const value = 24;
 
-		ll.append(21);
-		ll.append(23);
-		ll.append(value);
+		ll.prepend(21);
+		ll.prepend(23);
+		ll.prepend(value);
 
-		expect(ll.toString()).toBe("(21) -> (23) -> (24) -> null");
+		expect(ll.toString()).toBe("( 21 ) -> ( 23 ) -> ( 24 ) -> null");
 	});
 });

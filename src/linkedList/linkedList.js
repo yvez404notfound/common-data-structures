@@ -31,7 +31,7 @@ class LinkedList {
 		if (index > this.size - 1) return undefined;
 
 		let node = this.tail;
-		for (let i = 0; i <= index && node !== null; i++) node = node.next;
+		for (let i = 0; i < index && node !== null; i++) node = node.next;
 
 		return node.value;
 	};
@@ -64,11 +64,9 @@ class LinkedList {
 	findIndex = function (value) {
 		let node = this.tail;
 
-		let i = 0;
-		while (node !== null) {
-			if (value === node.value) return i;
+		for (let i = 0; i <= this.size - 1 && node !== null; i++) {
+			if (node.value === value) return i;
 			node = node.next;
-			i++;
 		}
 
 		return -1;
@@ -126,32 +124,4 @@ class LinkedList {
 	};
 }
 
-const linkedList1 = new LinkedList();
-
-// debugger;
-linkedList1.prepend(22);
-linkedList1.prepend(23);
-linkedList1.prepend(24);
-linkedList1.prepend(25);
-linkedList1.append(21);
-linkedList1.prepend(26);
-console.log(linkedList1.toString());
-
-console.log(linkedList1);
-console.log(linkedList1.tail);
-console.log(linkedList1.size);
-console.log(linkedList1.at(2));
-console.log(linkedList1.contains(21));
-
-console.log(linkedList1.pop());
-console.log(linkedList1.toString());
-
-console.log(linkedList1.findIndex(25));
-
-console.log("Insertion", linkedList1.insertAt(22, 21, 23, 123, 41));
-console.log(linkedList1.toString());
-
-console.log("RemoveAt", linkedList1.removeAt(3));
-console.log(linkedList1.toString());
-
-// export { LinkedList };
+export { LinkedList };

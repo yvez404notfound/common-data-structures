@@ -39,59 +39,65 @@ describe("HashMap", () => {
 		expect(hashTable1.length()).toBe(12);
 	});
 
-	test("should be able to clear all entries stored", () => {
-		hashTable1.clear();
-		expect(hashTable1.length()).toBe(0);
-	});
-
 	test("should be able return all entries' keys in an array", () => {
-		expect(hashTable1.keys()).toEqual([
-			"apple",
-			"banana",
-			"carrot",
-			"dog",
-			"elephant",
-			"frog",
-			"grape",
-			"hat",
-			"ice cream",
-			"jacket",
-			"kite",
-			"lion",
-		]);
+		expect(hashTable1.keys().sort()).toEqual(
+			[
+				"apple",
+				"banana",
+				"carrot",
+				"dog",
+				"elephant",
+				"frog",
+				"grape",
+				"hat",
+				"ice cream",
+				"jacket",
+				"kite",
+				"lion",
+			].sort(),
+		);
 	});
 
 	test("should be able return all entries' values in an array", () => {
-		expect(hashTable1.values()).toEqual([
-			"red",
-			"yellow",
-			"orange",
-			"brown",
-			"gray",
-			"green",
-			"purple",
-			"black",
-			"white",
-			"blue",
-			"pink",
-			"golden",
-		]);
+		expect(hashTable1.values().sort()).toEqual(
+			[
+				"red",
+				"yellow",
+				"orange",
+				"brown",
+				"gray",
+				"green",
+				"purple",
+				"black",
+				"white",
+				"blue",
+				"pink",
+				"golden",
+			].sort(),
+		);
 	});
 
 	test("should be able return all entries' key value pair in an array", () => {
-		expect(hashTable1.entries()).toEqual([
-			["apple", "red"],
-			["banana", "yellow"],
-			["carrot", "orange"],
-			["dog", "brown"],
-			["elephant", "gray"],
-			["frog", "green"],
-			["grape", "purple"],
-			["hat", "black"],
-			["ice cream", "white"],
-			["jacket", "blue"],
-			["kite", "pink"],
-			["lion", "golden"],
-		]);
+		expect(hashTable1.entries().sort()).toEqual(
+			[
+				["apple", "red"],
+				["banana", "yellow"],
+				["carrot", "orange"],
+				["dog", "brown"],
+				["elephant", "gray"],
+				["frog", "green"],
+				["grape", "purple"],
+				["hat", "black"],
+				["ice cream", "white"],
+				["jacket", "blue"],
+				["kite", "pink"],
+				["lion", "golden"],
+			].sort(),
+		);
+	});
+
+	test("should be able to clear all entries stored", () => {
+		hashTable1.clear();
+		expect(hashTable1.length()).toBe(0);
 	});
 });

@@ -78,6 +78,8 @@ class LinkedList {
 		let str = "";
 		let node = this.tail;
 
+		if (this.size === 1) return `( ${node.value} ) -> null`;
+
 		while (node !== null) {
 			str += `( ${node.value} ) -> `;
 			node = node.next;

@@ -1,54 +1,51 @@
 import { HashMap } from "./hashMap";
 
-beforeAll(() => {
-	const hashmap1 = new HashMap();
-
-	hashmap1.set("apple", "red");
-	hashmap1.set("banana", "yellow");
-	hashmap1.set("carrot", "orange");
-	hashmap1.set("dog", "brown");
-	hashmap1.set("elephant", "gray");
-	hashmap1.set("frog", "green");
-	hashmap1.set("grape", "purple");
-	hashmap1.set("hat", "black");
-	hashmap1.set("ice cream", "white");
-	hashmap1.set("jacket", "blue");
-	hashmap1.set("kite", "pink");
-	hashmap1.set("lion", "golden");
-
-	return hashmap1;
-});
-
 describe("HashMap", () => {
+	const hashTable1 = new HashMap();
+
+	hashTable1.set("apple", "red");
+	hashTable1.set("banana", "yellow");
+	hashTable1.set("carrot", "orange");
+	hashTable1.set("dog", "brown");
+	hashTable1.set("elephant", "gray");
+	hashTable1.set("frog", "green");
+	hashTable1.set("grape", "purple");
+	hashTable1.set("hat", "black");
+	hashTable1.set("ice cream", "white");
+	hashTable1.set("jacket", "blue");
+	hashTable1.set("kite", "pink");
+	hashTable1.set("lion", "golden");
+
 	test("should detect existing entries inside its buckets", () => {
-		expect(hashmap1.has("apple")).toBeTruthy();
-		expect(hashmap1.has("banana")).toBeTruthy();
-		expect(hashmap1.has("carrot")).toBeTruthy();
+		expect(hashTable1.has("apple")).toBeTruthy();
+		expect(hashTable1.has("banana")).toBeTruthy();
+		expect(hashTable1.has("carrot")).toBeTruthy();
 	});
 
 	test("should be able to add entries", () => {
-		expect(hashmap1.has("apple")).toBeTruthy();
-		expect(hashmap1.has("banana")).toBeTruthy();
-		expect(hashmap1.has("carrot")).toBeTruthy();
+		expect(hashTable1.has("apple")).toBeTruthy();
+		expect(hashTable1.has("banana")).toBeTruthy();
+		expect(hashTable1.has("carrot")).toBeTruthy();
 	});
 
 	test("should be able to remove an entry", () => {
-		hashmap1.remove("lion");
+		hashTable1.set("omsim", "barabida");
+		hashTable1.remove("omsim");
 
-		expect(hashmap1.has("lion")).toBeFalsy();
+		expect(hashTable1.has("omsim")).toBeFalsy();
 	});
 
 	test("should return number of entries stored", () => {
-		expect(hashmap1.length()).toBe(12);
+		expect(hashTable1.length()).toBe(12);
 	});
 
 	test("should be able to clear all entries stored", () => {
-		hashmap1.clear();
-		expect(hashmap1.length()).toBe(0);
+		hashTable1.clear();
+		expect(hashTable1.length()).toBe(0);
 	});
 
 	test("should be able return all entries' keys in an array", () => {
-		expect(hashmap1.keys()).toEqual([
+		expect(hashTable1.keys()).toEqual([
 			"apple",
 			"banana",
 			"carrot",
@@ -65,7 +62,7 @@ describe("HashMap", () => {
 	});
 
 	test("should be able return all entries' values in an array", () => {
-		expect(hashmap1.values()).toEqual([
+		expect(hashTable1.values()).toEqual([
 			"red",
 			"yellow",
 			"orange",
@@ -82,7 +79,7 @@ describe("HashMap", () => {
 	});
 
 	test("should be able return all entries' key value pair in an array", () => {
-		expect(hashmap1.entries()).toEqual([
+		expect(hashTable1.entries()).toEqual([
 			["apple", "red"],
 			["banana", "yellow"],
 			["carrot", "orange"],

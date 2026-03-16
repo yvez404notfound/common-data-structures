@@ -4,6 +4,10 @@ class HashMap {
 	buckets = [];
 
 	constructor(capacity = 16, loadFactor = 0.75) {
+		if (capacity < 1) {
+			throw new RangeError("Capacity must be greater than 0");
+		}
+
 		this.capacity = capacity;
 		this.loadFactor = loadFactor;
 	}
@@ -15,7 +19,7 @@ class HashMap {
 		for (let i = 0; i <= key.length - 1; i++)
 			hashCode += primeNumber + key.charCodeAt(i);
 
-		return (hashCode % this.capacity) - 1;
+		return hashCode % this.capacity;
 	};
 
 	isBucketEmpty = function (hashCode) {
@@ -82,36 +86,75 @@ class HashMap {
 
 	length = function () {
 		let len = 0;
-
 		this.buckets.forEach((num) => (len += num.size ?? 0));
-
 		return len;
 	};
 
 	clear = function () {
 		this.buckets.length = 0;
 	};
+
+	toString = function () {
+		this.buckets.forEach((num, i) => {
+			console.log(`Bucket [${i}]: ${num.toString()}`);
+		});
+	};
+
+	keys = function () {
+		let k = [];
+
+		this.buckets.forEach((_, i) => {
+			let node = this.buckets[i].tail;
+			for (let j = 0; j < this.buckets[i].size && node !== null; j++) {
+				k.push(node.value[0]);
+				node = node.next;
+			}
+		});
+
+		return k;
+	};
+
+	keys = function () {
+		let k = [];
+
+		this.buckets.forEach((_, i) => {
+			let node = this.buckets[i].tail;
+			for (let j = 0; j < this.buckets[i].size && node !== null; j++) {
+				k.push(node.value[0]);
+				node = node.next;
+			}
+		});
+
+		return k;
+	};
+
+	values = function () {
+		let v = [];
+
+		this.buckets.forEach((_, i) => {
+			let node = this.buckets[i].tail;
+			for (let j = 0; j < this.buckets[i].size && node !== null; j++) {
+				v.push(node.value[1]);
+				node = node.next;
+			}
+		});
+
+		return v;
+	};
+
+	entries = function () {
+		let e = [];
+
+		this.buckets.forEach((_, i) => {
+			let node = this.buckets[i].tail;
+			for (let j = 0; j < this.buckets[i].size && node !== null; j++) {
+				e.push(node.value);
+				node = node.next;
+			}
+		});
+
+		return e;
+	};
 }
-
-const test1 = new HashMap(16, 0.75);
-
-console.log(test1.set("apple", "red"));
-console.log(test1.set("apple", "bordsawe"));
-console.log(test1.set("apple", "brocacho"));
-console.log(test1.set("leapp", "marinduque"));
-console.log(test1.set("banna", "yellow"));
-console.log(test1.buckets[12]);
-
-console.log(test1.get("apple"));
-console.log(test1.has("weawa"));
-
-console.log(test1.remove("leapp"));
-console.log(test1.buckets[12]);
-
-console.log("\n==========\n");
-console.log(test1.length());
-
-// console.log(test1.clear());
-// console.log(test1.buckets);
 
 export { HashMap };

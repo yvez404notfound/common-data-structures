@@ -46,6 +46,7 @@ class LinkedList {
 
 		this.head = node;
 		this.head.next = null;
+		this.size--;
 
 		return removedNodeValue;
 	};
@@ -65,6 +66,7 @@ class LinkedList {
 		let node = this.tail;
 
 		for (let i = 0; i <= this.size - 1 && node !== null; i++) {
+			console.log(node.value);
 			if (node.value === value) return i;
 			node = node.next;
 		}
@@ -94,6 +96,7 @@ class LinkedList {
 		values.forEach((val) => {
 			node.next = new LinkedList.Node(val, null);
 			node = node.next;
+			size++;
 		});
 
 		node.next = tempNode;
@@ -103,8 +106,13 @@ class LinkedList {
 		if (index > this.size - 1) return undefined;
 
 		let node = this.tail;
-		for (let i = 0; i <= index - 1 && node !== null; i++) node = node.next;
+		for (let i = 0; i <= index - 1 && node !== null; i++) {
+			if (i === index - 1) return this.pop();
+			node = node.next;
+		}
+
 		node.next = node.next.next;
+		this.size--;
 
 		return node;
 	};

@@ -4,12 +4,13 @@ class HashMap {
 	buckets = [];
 
 	constructor(capacity = 16, loadFactor = 0.75) {
-		if (capacity < 1) {
-			throw new RangeError("Capacity must be greater than 0");
-		}
+		if (capacity < 1) throw new RangeError("Capacity must be greater than 0");
+		if (loadFactor < 0)
+			throw new RangeError("Load factor must be greater than 0");
 
 		this.capacity = capacity;
 		this.loadFactor = loadFactor;
+		this.maxEntriesAllowed = this.loadFactor * this.capacity;
 	}
 
 	hash = function (key) {
@@ -26,6 +27,10 @@ class HashMap {
 		return typeof this.buckets[hashCode] === "undefined" ? true : false;
 	};
 
+	isBucketsAtMaxLoad = function () {
+		return this.length() >= this.maxEntriesAllowed ? true : false;
+	};
+
 	set = function (key, value = key) {
 		const hashCode = this.hash(key);
 
@@ -37,8 +42,19 @@ class HashMap {
 			if (key === node.value[0]) return (node.value[1] = value);
 			node = node.next;
 		}
+		//
 
 		this.buckets[hashCode].prepend([key, value], null);
+
+		if (this.isBucketsAtMaxLoad()) this.grow();
+	};
+
+	grow = function () {
+		this.capacity *= 2;
+		this.maxEntriesAllowed = this.loadFactor * this.capacity;
+		const entries = this.entries();
+		this.clear();
+		entries.forEach((entry) => this.set(entry[0], entry[1]));
 	};
 
 	get = function (key) {
@@ -85,9 +101,9 @@ class HashMap {
 	};
 
 	length = function () {
-		let len = 0;
-		this.buckets.forEach((num) => (len += num.size ?? 0));
-		return len;
+		let l = 0;
+		this.buckets.forEach((num) => (l += num.size ?? 0));
+		return l;
 	};
 
 	clear = function () {
@@ -98,20 +114,6 @@ class HashMap {
 		this.buckets.forEach((num, i) => {
 			console.log(`Bucket [${i}]: ${num.toString()}`);
 		});
-	};
-
-	keys = function () {
-		let k = [];
-
-		this.buckets.forEach((_, i) => {
-			let node = this.buckets[i].tail;
-			for (let j = 0; j < this.buckets[i].size && node !== null; j++) {
-				k.push(node.value[0]);
-				node = node.next;
-			}
-		});
-
-		return k;
 	};
 
 	keys = function () {

@@ -1,3 +1,4 @@
+import { Queue } from "../../queue/queue.js";
 import { mergeSort } from "../../utils/sort.js";
 
 class BalancedTreeNode {
@@ -20,14 +21,29 @@ class BalancedTreeNode {
 		return this;
 	};
 
-	prettyPrint = function (node = this, prefix = "", isLeft = true) {
+	toString = function (node = this, prefix = "", isLeft = true) {
 		if (node === null || node === undefined) {
+			console.log(`${prefix}${isLeft ? "└── " : "┌── "}null`);
 			return;
 		}
 
-		this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+		this.toString(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
 		console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.root}`);
-		this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+		this.toString(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+	};
+
+	levelOrderForEach = function (cb) {
+		const queue = new Queue();
+
+		let refNode = this;
+		queue.enq(refNode);
+		while (!queue.isEmpty()) {
+			refNode = queue.deq();
+			cb(refNode);
+
+			if (refNode.left !== null) queue.enq(refNode.left);
+			if (refNode.right !== null) queue.enq(refNode.right);
+		}
 	};
 }
 
@@ -39,6 +55,13 @@ console.log(arr, "\n");
 const bst1 = new BalancedTreeNode();
 bst1.buildTree(arr, 0, arr.length - 1);
 
-console.log(bst1.prettyPrint());
+console.log(bst1.toString());
+
+debugger;
+console.log(
+	bst1.levelOrderForEach((node) => {
+		console.log(node);
+	}),
+);
 
 // export { BalancedTreeNode };

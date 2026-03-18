@@ -51,6 +51,17 @@ class LinkedList {
 		return removedNodeValue;
 	};
 
+	shift = function () {
+		if (this.size === 0) return undefined;
+
+		const removedNodeValue = this.tail.value;
+
+		this.tail = this.tail.next;
+		this.size--;
+
+		return removedNodeValue;
+	};
+
 	contains = function (value) {
 		let node = this.tail;
 

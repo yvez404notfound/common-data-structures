@@ -39,17 +39,61 @@ class BalancedTreeNode {
 
 		this.searchTargetNode(value, (node) => {
 			lastRefNode = node;
-			console.log(`Target value: ${value}, Current node value: ${node.root}`);
 		});
 
 		lastRefNode[value < lastRefNode.root ? "left" : "right"] =
 			new BalancedTreeNode(value, null, null);
 
-		return lastRefNode;
+		return value;
+	};
+
+	/* 	
+	deleteItem = function (value) {
+			if (this.includes(value)) return -1;
+
+			let lastParentNode;
+			let lastNode;
+
+			this.searchTargetNode(value, (node) => {
+				lastParentNode = node;
+
+				if (node.left === value) {
+					lastNode = node.left;
+				} else if (node.right === value) {
+					lastNode = node.right;
+				}
+
+				return;
+			});
+
+			const lastNodeChildren = lastNode.availableChildren();
+
+			if (lastNodeChildren.length >= 2) {
+				lastParentNode[lastNodeChildren[0].root < lastParentNode.root ? "left" : "right"] = 
+			} else {
+				lastParentNode = lastNodeChildren;
+			}
+
+			return;
+		};
+ */
+
+	availableChildren = function () {
+		if (this.left === null && this.left === null) {
+			return null;
+		} else if (this.left !== null && this.right === null) {
+			return this.left;
+		} else if (
+			lastRefTargetNode.right !== null &&
+			lastRefTargetNode.left === nul
+		) {
+			return this.right;
+		} else {
+			return [this.left, this.right];
+		}
 	};
 
 	searchTargetNode = function (target, cb) {
-		// debugger;
 		let refNode = this;
 
 		while (refNode !== null) {
@@ -80,15 +124,40 @@ class BalancedTreeNode {
 		}
 	};
 
+	// === Depth-first Traversal ===
+	inOrderForEach = function (node = this, cb) {
+		if (node === null) return;
+
+		if (cb(node)) return node;
+		this.inOrderForEach(node.left, cb);
+		this.inOrderForEach(node.right, cb);
+	};
+
+	preOrderForEach = function (node = this, cb) {
+		if (node === null) return;
+
+		this.preOrderForEach(node.left, cb);
+		if (cb(node)) return node;
+		this.preOrderForEach(node.right, cb);
+	};
+
+	postOrderForEach = function (node = this, cb) {
+		if (node === null) return;
+
+		this.postOrderForEach(node.left, cb);
+		this.postOrderForEach(node.right, cb);
+		if (cb(node)) return node;
+	};
+	// === END ===
+
 	toString = function () {
 		const stack = [];
 
-		// push initial frame
 		stack.push({
 			node: this,
 			prefix: "",
 			isLeft: true,
-			stage: 0, // 0 = go right, 1 = print, 2 = go left
+			stage: 0,
 		});
 
 		while (stack.length > 0) {
@@ -101,10 +170,6 @@ class BalancedTreeNode {
 			}
 
 			if (stage === 0) {
-				// Simulate recursive order:
-				// right -> print -> left
-
-				// Push left call
 				stack.push({
 					node: node.left,
 					prefix: `${prefix}${isLeft ? "    " : "│   "}`,
@@ -112,7 +177,6 @@ class BalancedTreeNode {
 					stage: 0,
 				});
 
-				// Push print step
 				stack.push({
 					node,
 					prefix,
@@ -120,7 +184,6 @@ class BalancedTreeNode {
 					stage: 1,
 				});
 
-				// Push right call
 				stack.push({
 					node: node.right,
 					prefix: `${prefix}${isLeft ? "│   " : "    "}`,
@@ -141,12 +204,20 @@ const arr = mergeSort([
 const bst1 = new BalancedTreeNode();
 bst1.buildTree(arr, 0, arr.length - 1);
 
-console.log(bst1);
+console.log(arr);
 console.log(bst1.toString());
 
-// debugger;
-console.log(bst1.insert(325));
-console.log(bst1.insert(200));
-console.log(bst1.toString());
+bst1.inOrderForEach(bst1, (node) => {
+	console.log(node.root);
+});
+
+// in-order traversal (root-left-right)
+// [8, 4, 3, 1, 7, 5, 67, 23, 9, 6345, 324]
+
+// pre-order traversal (left-root-right)
+// [1, 3, 4, 5, 7, 4, 8, 9, 23, 67, 324, 6345]
+
+// post-order traversal (left-right-root)
+// [1, 3, 5, 7, 4, 9, 23, 324, 6345, 67, 8]
 
 export { BalancedTreeNode };

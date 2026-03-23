@@ -125,27 +125,27 @@ class BalancedTreeNode {
 	};
 
 	// === Depth-first Traversal ===
-	inOrderForEach = function (node = this, cb) {
+	inOrderForEach = function (cb, node = this) {
 		if (node === null) return;
 
 		if (cb(node)) return node;
-		this.inOrderForEach(node.left, cb);
-		this.inOrderForEach(node.right, cb);
+		this.inOrderForEach(cb, node.left);
+		this.inOrderForEach(cb, node.right);
 	};
 
-	preOrderForEach = function (node = this, cb) {
+	preOrderForEach = function (cb, node = this) {
 		if (node === null) return;
 
-		this.preOrderForEach(node.left, cb);
+		this.preOrderForEach(cb, node.left);
 		if (cb(node)) return node;
-		this.preOrderForEach(node.right, cb);
+		this.preOrderForEach(cb, node.right);
 	};
 
-	postOrderForEach = function (node = this, cb) {
+	postOrderForEach = function (cb, node = this) {
 		if (node === null) return;
 
-		this.postOrderForEach(node.left, cb);
-		this.postOrderForEach(node.right, cb);
+		this.postOrderForEach(cb, node.left);
+		this.postOrderForEach(cb, node.right);
 		if (cb(node)) return node;
 	};
 	// === END ===
@@ -207,9 +207,7 @@ bst1.buildTree(arr, 0, arr.length - 1);
 console.log(arr);
 console.log(bst1.toString());
 
-bst1.inOrderForEach(bst1, (node) => {
-	console.log(node.root);
-});
+bst1.inOrderForEach((node) => console.log(node.root));
 
 // in-order traversal (root-left-right)
 // [8, 4, 3, 1, 7, 5, 67, 23, 9, 6345, 324]

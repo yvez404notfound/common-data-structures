@@ -23,7 +23,7 @@ describe("Binary Search Tree test cases", () => {
 
 		test("should do in-order traversal", () => {
 			const treeArr = [];
-			tree1.inOrderForEach(tree1, (node) => {
+			tree1.inOrderForEach((node) => {
 				treeArr.push(node.root);
 			});
 			expect(treeArr).toEqual([8, 4, 3, 1, 7, 5, 67, 23, 9, 6345, 324]);
@@ -31,7 +31,7 @@ describe("Binary Search Tree test cases", () => {
 
 		test("should do pre-order traversal", () => {
 			const treeArr = [];
-			tree1.preOrderForEach(tree1, (node) => {
+			tree1.preOrderForEach((node) => {
 				treeArr.push(node.root);
 			});
 			expect(treeArr).toEqual([1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]);
@@ -39,7 +39,7 @@ describe("Binary Search Tree test cases", () => {
 
 		test("should do post-order traversal", () => {
 			const treeArr = [];
-			tree1.postOrderForEach(tree1, (node) => {
+			tree1.postOrderForEach((node) => {
 				treeArr.push(node.root);
 			});
 			expect(treeArr).toEqual([1, 3, 5, 7, 4, 9, 23, 324, 6345, 67, 8]);

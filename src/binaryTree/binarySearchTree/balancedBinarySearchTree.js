@@ -85,10 +85,7 @@ class BalancedTreeNode {
 			let inorderSucessorNode = targetNode.right;
 
 			targetNode.right.inOrderForEach((node) => {
-				console.log(node);
-				if (node.root < inorderSucessorNode.root) {
-					inorderSucessorNode = node;
-				}
+				if (node.root < inorderSucessorNode.root) inorderSucessorNode = node;
 			});
 
 			this.deleteItem(inorderSucessorNode.root);

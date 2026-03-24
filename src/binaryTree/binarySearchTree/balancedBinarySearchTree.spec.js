@@ -57,9 +57,9 @@ describe("Binary Search Tree test cases", () => {
 		expect(node).toBe(42441);
 	});
 
-	// test("should delete a node base on the given value", () => {
-	// 	tree1.deleteItem(6345);
+	test("should delete a node base on the given value", () => {
+		tree1.deleteItem(6345);
 
-	// 	expect(tree1.includes(6345)).toBeFalsy();
-	// });
+		expect(tree1.includes(6345)).toBeFalsy();
+	});
 });

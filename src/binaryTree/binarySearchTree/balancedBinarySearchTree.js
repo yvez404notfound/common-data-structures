@@ -47,49 +47,60 @@ class BalancedTreeNode {
 		return value;
 	};
 
-	/* 	
 	deleteItem = function (value) {
-			if (this.includes(value)) return -1;
+		if (!this.includes(value)) return -1;
 
-			let lastParentNode;
-			let lastNode;
+		let targetNodeParent;
+		let targetNode;
 
-			this.searchTargetNode(value, (node) => {
-				lastParentNode = node;
-
-				if (node.left === value) {
-					lastNode = node.left;
-				} else if (node.right === value) {
-					lastNode = node.right;
-				}
-
+		this.searchTargetNode(value, (node) => {
+			if (node.left?.root === value) {
+				targetNode = node.left;
+				targetNodeParent = node;
 				return;
-			});
-
-			const lastNodeChildren = lastNode.availableChildren();
-
-			if (lastNodeChildren.length >= 2) {
-				lastParentNode[lastNodeChildren[0].root < lastParentNode.root ? "left" : "right"] = 
-			} else {
-				lastParentNode = lastNodeChildren;
+			} else if (node.right?.root === value) {
+				targetNode = node.right;
+				targetNodeParent = node;
+				return;
 			}
+		});
 
-			return;
-		};
- */
+		console.log("Parent node: ", targetNodeParent);
+		console.log(targetNode);
+
+		const targetNodeChildrenCount = targetNode.availableChildren();
+
+		if (targetNodeChildrenCount <= 0) {
+			targetNodeParent[
+				targetNode.root < targetNodeParent.root ? "left" : "right"
+			] = null;
+		} else if (targetNodeChildrenCount === 1) {
+			targetNodeParent[
+				targetNode.root < targetNodeParent.root ? "left" : "right"
+			] = targetNode[targetNode.left === null ? "right" : "left"];
+			targetNode[targetNode.left === null ? "right" : "left"] = null;
+		} else {
+			// let inorderSucessorNode;
+			// targetNode.left.inOrderForEach((node) => {
+			// 	if(node )
+			// })
+		}
+
+		// console.log(targetNodeParent);
+
+		return value;
+	};
 
 	availableChildren = function () {
 		if (this.left === null && this.left === null) {
-			return null;
-		} else if (this.left !== null && this.right === null) {
-			return this.left;
+			return 0;
 		} else if (
-			lastRefTargetNode.right !== null &&
-			lastRefTargetNode.left === nul
+			(this.left !== null && this.right === null) ||
+			(this.right !== null && this.left === null)
 		) {
-			return this.right;
+			return 1;
 		} else {
-			return [this.left, this.right];
+			return 2;
 		}
 	};
 
@@ -207,7 +218,25 @@ bst1.buildTree(arr, 0, arr.length - 1);
 console.log(arr);
 console.log(bst1.toString());
 
-bst1.inOrderForEach((node) => console.log(node.root));
+// console.log(bst1.deleteItem(6345));
+// console.log(bst1.toString());
+
+console.log(bst1.deleteItem(6345));
+console.log(bst1.toString());
+
+console.log(bst1.deleteItem(324));
+console.log(bst1.toString());
+
+console.log(bst1.deleteItem(9));
+console.log(bst1.toString());
+
+console.log(bst1.deleteItem(67));
+console.log(bst1.toString());
+
+console.log(bst1.deleteItem(23));
+console.log(bst1.toString());
+
+// bst1.inOrderForEach((node) => console.log(node.root));
 
 // in-order traversal (root-left-right)
 // [8, 4, 3, 1, 7, 5, 67, 23, 9, 6345, 324]

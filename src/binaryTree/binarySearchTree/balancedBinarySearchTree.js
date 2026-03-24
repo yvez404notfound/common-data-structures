@@ -54,6 +54,11 @@ class BalancedTreeNode {
 		let targetNode;
 
 		this.searchTargetNode(value, (node) => {
+			if (node.root === value) {
+				targetNode = node;
+				return;
+			}
+
 			if (node.left?.root === value) {
 				targetNode = node.left;
 				targetNodeParent = node;
@@ -64,9 +69,6 @@ class BalancedTreeNode {
 				return;
 			}
 		});
-
-		console.log("Parent node: ", targetNodeParent);
-		console.log(targetNode);
 
 		const targetNodeChildrenCount = targetNode.availableChildren();
 
@@ -80,19 +82,24 @@ class BalancedTreeNode {
 			] = targetNode[targetNode.left === null ? "right" : "left"];
 			targetNode[targetNode.left === null ? "right" : "left"] = null;
 		} else {
-			// let inorderSucessorNode;
-			// targetNode.left.inOrderForEach((node) => {
-			// 	if(node )
-			// })
-		}
+			let inorderSucessorNode = targetNode.right;
 
-		// console.log(targetNodeParent);
+			targetNode.right.inOrderForEach((node) => {
+				console.log(node);
+				if (node.root < inorderSucessorNode.root) {
+					inorderSucessorNode = node;
+				}
+			});
+
+			this.deleteItem(inorderSucessorNode.root);
+			targetNode.root = inorderSucessorNode.root;
+		}
 
 		return value;
 	};
 
 	availableChildren = function () {
-		if (this.left === null && this.left === null) {
+		if (this.left === null && this.right === null) {
 			return 0;
 		} else if (
 			(this.left !== null && this.right === null) ||
@@ -218,23 +225,26 @@ bst1.buildTree(arr, 0, arr.length - 1);
 console.log(arr);
 console.log(bst1.toString());
 
+console.log(bst1.deleteItem(8));
+console.log(bst1.toString());
+
 // console.log(bst1.deleteItem(6345));
 // console.log(bst1.toString());
 
-console.log(bst1.deleteItem(6345));
-console.log(bst1.toString());
+// console.log(bst1.deleteItem(324));
+// console.log(bst1.toString());
 
-console.log(bst1.deleteItem(324));
-console.log(bst1.toString());
+// console.log(bst1.deleteItem(9));
+// console.log(bst1.toString());
 
-console.log(bst1.deleteItem(9));
-console.log(bst1.toString());
+// console.log(bst1.deleteItem(67));
+// console.log(bst1.toString());
 
-console.log(bst1.deleteItem(67));
-console.log(bst1.toString());
+// console.log(bst1.deleteItem(23));
+// console.log(bst1.toString());
 
-console.log(bst1.deleteItem(23));
-console.log(bst1.toString());
+// console.log(bst1.deleteItem(23));
+// console.log(bst1.toString());
 
 // bst1.inOrderForEach((node) => console.log(node.root));
 

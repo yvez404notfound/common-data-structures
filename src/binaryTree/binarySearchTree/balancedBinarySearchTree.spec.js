@@ -50,6 +50,16 @@ describe("Binary Search Tree test cases", () => {
 		expect(tree1.includes(4)).toBeTruthy();
 	});
 
+	test("should give the height of the tree", () => {
+		const height = tree1.height();
+		expect(height).toBe(3);
+	});
+
+	test("should give the depth of a specific node in a tree", () => {
+		const depth = tree1.depth(6345);
+		expect(depth).toBe(2);
+	});
+
 	test("should insert value to any node", () => {
 		const node = tree1.insert(42441);
 

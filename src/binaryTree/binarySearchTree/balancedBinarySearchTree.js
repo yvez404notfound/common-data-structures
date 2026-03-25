@@ -23,7 +23,7 @@ class BalancedTreeNode {
 	includes = function (value) {
 		let isIncluded = false;
 
-		this.searchTargetNode(value, (node) => {
+		this.#searchTargetNode(value, (node) => {
 			if (node.root === value) {
 				return (isIncluded = true);
 			}
@@ -37,7 +37,7 @@ class BalancedTreeNode {
 
 		let lastRefNode;
 
-		this.searchTargetNode(value, (node) => {
+		this.#searchTargetNode(value, (node) => {
 			lastRefNode = node;
 		});
 
@@ -53,7 +53,7 @@ class BalancedTreeNode {
 		let targetNodeParent;
 		let targetNode;
 
-		this.searchTargetNode(value, (node) => {
+		this.#searchTargetNode(value, (node) => {
 			if (node.root === value) {
 				targetNode = node;
 				return;
@@ -70,7 +70,7 @@ class BalancedTreeNode {
 			}
 		});
 
-		const targetNodeChildrenCount = targetNode.availableChildren();
+		const targetNodeChildrenCount = targetNode.#availableChildren();
 
 		if (targetNodeChildrenCount <= 0) {
 			targetNodeParent[
@@ -95,33 +95,49 @@ class BalancedTreeNode {
 		return value;
 	};
 
-	availableChildren = function () {
-		if (this.left === null && this.right === null) {
-			return 0;
-		} else if (
-			(this.left !== null && this.right === null) ||
-			(this.right !== null && this.left === null)
-		) {
-			return 1;
-		} else {
-			return 2;
-		}
+	depth = function (value) {
+		if (!this.includes(value)) return -1;
+
+		let d = -1;
+		this.#searchTargetNode(value, () => {
+			d++;
+		});
+
+		return d;
 	};
 
-	searchTargetNode = function (target, cb) {
-		let refNode = this;
+	height = function (value = this.root) {
+		if (!this.includes(value)) return -1;
 
-		while (refNode !== null) {
-			if (cb(refNode)) return refNode;
+		let height = 0;
 
-			if (refNode.left === null && refNode.right === null) break;
+		let targetNode;
+		this.#searchTargetNode(value, (node) => {
+			targetNode = node;
+		});
 
-			if (target < refNode.root) {
-				refNode = refNode.left;
-			} else {
-				refNode = refNode.right;
+		targetNode.inOrderForEach((node) => {
+			if (node.#availableChildren() === 0) {
+				const nodeDepth = targetNode.depth(node.root);
+				height = nodeDepth > height ? nodeDepth : height;
 			}
-		}
+		});
+
+		return height;
+	};
+
+	isBalanced = function () {
+		let ib = true;
+
+		this.postOrderForEach((node) => {
+			const lNodeHeight = node.left?.height() ?? -1;
+			const rNodeHeight = node.right?.height() ?? -1;
+			const subtreesHeightDif = lNodeHeight - rNodeHeight;
+
+			if (subtreesHeightDif < 0 || subtreesHeightDif > 1) return (ib = false);
+		});
+
+		return ib;
 	};
 
 	// Breadth-first traversal
@@ -210,6 +226,36 @@ class BalancedTreeNode {
 			}
 		}
 	};
+
+	#availableChildren = function () {
+		if (this.left === null && this.right === null) {
+			return 0;
+		} else if (
+			(this.left !== null && this.right === null) ||
+			(this.right !== null && this.left === null)
+		) {
+			return 1;
+		} else {
+			return 2;
+		}
+	};
+
+	#searchTargetNode = function (target, cb) {
+		let refNode = this;
+
+		while (refNode !== null) {
+			if (cb(refNode)) return refNode;
+
+			if (refNode.root === target) break;
+			if (refNode.left === null && refNode.right === null) break;
+
+			if (target < refNode.root) {
+				refNode = refNode.left;
+			} else {
+				refNode = refNode.right;
+			}
+		}
+	};
 }
 
 const arr = mergeSort([
@@ -221,37 +267,10 @@ bst1.buildTree(arr, 0, arr.length - 1);
 
 console.log(arr);
 console.log(bst1.toString());
+console.log(bst1.isBalanced());
 
-console.log(bst1.deleteItem(8));
+console.log(bst1.insert(555));
 console.log(bst1.toString());
-
-// console.log(bst1.deleteItem(6345));
-// console.log(bst1.toString());
-
-// console.log(bst1.deleteItem(324));
-// console.log(bst1.toString());
-
-// console.log(bst1.deleteItem(9));
-// console.log(bst1.toString());
-
-// console.log(bst1.deleteItem(67));
-// console.log(bst1.toString());
-
-// console.log(bst1.deleteItem(23));
-// console.log(bst1.toString());
-
-// console.log(bst1.deleteItem(23));
-// console.log(bst1.toString());
-
-// bst1.inOrderForEach((node) => console.log(node.root));
-
-// in-order traversal (root-left-right)
-// [8, 4, 3, 1, 7, 5, 67, 23, 9, 6345, 324]
-
-// pre-order traversal (left-root-right)
-// [1, 3, 4, 5, 7, 4, 8, 9, 23, 67, 324, 6345]
-
-// post-order traversal (left-right-root)
-// [1, 3, 5, 7, 4, 9, 23, 324, 6345, 67, 8]
+console.log(bst1.isBalanced());
 
 export { BalancedTreeNode };

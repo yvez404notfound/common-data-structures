@@ -140,6 +140,18 @@ class BalancedTreeNode {
 		return ib;
 	};
 
+	rebalance = function () {
+		let nodeValues = [];
+
+		this.preOrderForEach((node) => {
+			nodeValues.push(node.root);
+		});
+
+		this.buildTree(nodeValues, 0, nodeValues.length - 1);
+
+		return this.root;
+	};
+
 	// Breadth-first traversal
 	levelOrderForEach = function (cb) {
 		const queue = new Queue();
@@ -272,5 +284,10 @@ console.log(bst1.isBalanced());
 console.log(bst1.insert(555));
 console.log(bst1.toString());
 console.log(bst1.isBalanced());
+
+if (!bst1.isBalanced()) {
+	console.log(bst1.rebalance());
+	console.log(bst1.toString());
+}
 
 export { BalancedTreeNode };

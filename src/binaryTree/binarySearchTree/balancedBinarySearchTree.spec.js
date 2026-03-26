@@ -1,7 +1,7 @@
 import { mergeSort } from "../../utils/sort";
 import { BalancedTreeNode } from "./balancedBinarySearchTree";
 
-describe("Binary Search Tree test cases", () => {
+describe("Binary Search Tree test case #1", () => {
 	const tree1 = new BalancedTreeNode();
 	const arr = mergeSort([
 		...new Set([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]),
@@ -10,6 +10,7 @@ describe("Binary Search Tree test cases", () => {
 
 	test("should build a tree from a sorted array", () => {
 		expect(tree1.root).toBe(8);
+		expect(tree1).toBeInstanceOf(BalancedTreeNode);
 	});
 
 	describe("Traversals", () => {
@@ -60,6 +61,11 @@ describe("Binary Search Tree test cases", () => {
 		expect(depth).toBe(2);
 	});
 
+	test("should detect if tree is balanced", () => {
+		const isTreeBalanced = tree1.isBalanced();
+		expect(isTreeBalanced).toBeTruthy();
+	});
+
 	test("should insert value to any node", () => {
 		const node = tree1.insert(42441);
 
@@ -71,5 +77,27 @@ describe("Binary Search Tree test cases", () => {
 		tree1.deleteItem(6345);
 
 		expect(tree1.includes(6345)).toBeFalsy();
+	});
+
+	test("should be able to rebalance the tree if it is unbalanced", () => {
+		tree1.insert(333);
+		tree1.insert(310);
+		tree1.insert(205);
+
+		expect(tree1.isBalanced()).toBeFalsy();
+
+		if (!tree1.isBalanced()) {
+			tree1.rebalance();
+			tree1.toString();
+		}
+
+		let balancedTreeArr = [];
+		tree1.preOrderForEach((node) => {
+			balancedTreeArr.push(node.root);
+		});
+
+		expect(balancedTreeArr).toEqual([
+			1, 3, 4, 5, 7, 8, 9, 23, 67, 205, 310, 324, 333, 42441,
+		]);
 	});
 });

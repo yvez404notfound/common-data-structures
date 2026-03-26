@@ -1,4 +1,5 @@
 import { Queue } from "../../queue/queue.js";
+import { generateRandomValuesArray } from "../../utils/generator.js";
 import { mergeSort } from "../../utils/sort.js";
 
 class BalancedTreeNode {
@@ -147,6 +148,7 @@ class BalancedTreeNode {
 			nodeValues.push(node.root);
 		});
 
+		nodeValues = mergeSort([...new Set(nodeValues)]);
 		this.buildTree(nodeValues, 0, nodeValues.length - 1);
 
 		return this.root;
@@ -270,24 +272,92 @@ class BalancedTreeNode {
 	};
 }
 
-const arr = mergeSort([
-	...new Set([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]),
-]);
+const balancedBinaryTreeDriver = function () {
+	console.log("Balanced Binary Search Tree driver started...");
+	console.log("Generating array...");
+	const sortedArr1 = mergeSort([
+		...new Set(generateRandomValuesArray(1, 100, 50)),
+	]);
+	console.log("Generated array: ", sortedArr1);
 
-const bst1 = new BalancedTreeNode();
-bst1.buildTree(arr, 0, arr.length - 1);
+	console.log("\nBuilding balance binary search tree on generated array...");
+	const tree1 = new BalancedTreeNode().buildTree(
+		sortedArr1,
+		0,
+		sortedArr1.length - 1,
+	);
 
-console.log(arr);
-console.log(bst1.toString());
-console.log(bst1.isBalanced());
+	console.log("Tree completed");
+	tree1.toString();
+	console.log(`Is tree balanced: `, tree1.isBalanced());
 
-console.log(bst1.insert(555));
-console.log(bst1.toString());
-console.log(bst1.isBalanced());
+	let levelOrderValues = [],
+		inOrderValues = [],
+		preOrderValues = [],
+		postOrderValues = [];
 
-if (!bst1.isBalanced()) {
-	console.log(bst1.rebalance());
-	console.log(bst1.toString());
-}
+	tree1.levelOrderForEach((node) => {
+		levelOrderValues.push(node.root);
+	});
+	console.log("Level order values: ", levelOrderValues);
+
+	tree1.inOrderForEach((node) => {
+		inOrderValues.push(node.root);
+	});
+	console.log("In order values: ", inOrderValues);
+
+	tree1.preOrderForEach((node) => {
+		preOrderValues.push(node.root);
+	});
+	console.log("Pre order values: ", preOrderValues);
+
+	tree1.postOrderForEach((node) => {
+		postOrderValues.push(node.root);
+	});
+	console.log("Pre order values: ", postOrderValues);
+
+	console.log("\nUnbalancing the tree...");
+	console.log("Adding several numbers more than 100...");
+	tree1.insert(101);
+	tree1.insert(102);
+	tree1.insert(103);
+	tree1.insert(104);
+	tree1.insert(105);
+	tree1.insert(106);
+	tree1.toString();
+	console.log(`Is tree balanced: `, tree1.isBalanced());
+
+	console.log("\nRebalancing the tree...");
+	tree1.rebalance();
+	tree1.toString();
+	console.log(`Is tree balanced: `, tree1.isBalanced());
+
+	((levelOrderValues = []),
+		(inOrderValues = []),
+		(preOrderValues = []),
+		(postOrderValues = []));
+
+	tree1.levelOrderForEach((node) => {
+		levelOrderValues.push(node.root);
+	});
+	console.log("Level order values: ", levelOrderValues);
+
+	tree1.inOrderForEach((node) => {
+		inOrderValues.push(node.root);
+	});
+	console.log("In order values: ", inOrderValues);
+
+	tree1.preOrderForEach((node) => {
+		preOrderValues.push(node.root);
+	});
+	console.log("Pre order values: ", preOrderValues);
+
+	tree1.postOrderForEach((node) => {
+		postOrderValues.push(node.root);
+	});
+	console.log("Pre order values: ", postOrderValues);
+};
+
+balancedBinaryTreeDriver();
 
 export { BalancedTreeNode };
